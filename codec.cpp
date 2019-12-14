@@ -25,55 +25,72 @@
 #include <cppcodec/base64_rfc4648.hpp>
 #include <cppcodec/base64_url.hpp>
 #include <cppcodec/base64_url_unpadded.hpp>
+// JSON
+#include <json/json.h>
 // CovScript DLL Header
 #include <covscript/dll.hpp>
+#include <covscript/cni.hpp>
 
 #define gen_invoker(NAME) [](const cs::string &str) -> cs::string { return NAME<std::string>(str); }
 
-void cs_extension_main(cs::name_space *ns)
-{
-	// Base32 root namespace
-	cs::namespace_t base32_ns = cs::make_shared_namespace<cs::name_space>();
-	// Base32 child namespace
-	cs::namespace_t base32_rfc4648_ns = cs::make_shared_namespace<cs::name_space>();
-	cs::namespace_t base32_crockford_ns = cs::make_shared_namespace<cs::name_space>();
-	cs::namespace_t base32_hex_ns = cs::make_shared_namespace<cs::name_space>();
-	// Base64 root namespace
-	cs::namespace_t base64_ns = cs::make_shared_namespace<cs::name_space>();
-	// Base64 child namespace
-	cs::namespace_t base64_rfc4648_ns = cs::make_shared_namespace<cs::name_space>();
-	cs::namespace_t base64_url_ns = cs::make_shared_namespace<cs::name_space>();
-	cs::namespace_t base64_url_unpadded_ns = cs::make_shared_namespace<cs::name_space>();
-	// Register
-	(*ns)
-	.add_var("base32", cs::make_namespace(base32_ns))
-	.add_var("base64", cs::make_namespace(base64_ns));
-	(*base32_ns)
-	.add_var("standard", cs::make_namespace(base32_rfc4648_ns))
-	.add_var("rfc4648", cs::make_namespace(base32_rfc4648_ns))
-	.add_var("crockford", cs::make_namespace(base32_crockford_ns))
-	.add_var("hex", cs::make_namespace(base32_hex_ns));
-	(*base32_rfc4648_ns)
-	.add_var("encode", cs::make_cni(gen_invoker(cppcodec::base32_rfc4648::encode), true))
-	.add_var("decode", cs::make_cni(gen_invoker(cppcodec::base32_rfc4648::decode), true));
-	(*base32_crockford_ns)
-	.add_var("encode", cs::make_cni(gen_invoker(cppcodec::base32_crockford::encode), true))
-	.add_var("decode", cs::make_cni(gen_invoker(cppcodec::base32_crockford::decode), true));
-	(*base32_hex_ns)
-	.add_var("encode", cs::make_cni(gen_invoker(cppcodec::base32_hex::encode), true))
-	.add_var("decode", cs::make_cni(gen_invoker(cppcodec::base32_hex::decode), true));
-	(*base64_ns)
-	.add_var("standard", cs::make_namespace(base64_rfc4648_ns))
-	.add_var("rfc4648", cs::make_namespace(base64_rfc4648_ns))
-	.add_var("url", cs::make_namespace(base64_url_ns))
-	.add_var("url_unpadded", cs::make_namespace(base64_url_unpadded_ns));
-	(*base64_rfc4648_ns)
-	.add_var("encode", cs::make_cni(gen_invoker(cppcodec::base64_rfc4648::encode), true))
-	.add_var("decode", cs::make_cni(gen_invoker(cppcodec::base64_rfc4648::decode), true));
-	(*base64_url_ns)
-	.add_var("encode", cs::make_cni(gen_invoker(cppcodec::base64_url::encode), true))
-	.add_var("decode", cs::make_cni(gen_invoker(cppcodec::base64_url::decode), true));
-	(*base64_url_unpadded_ns)
-	.add_var("encode", cs::make_cni(gen_invoker(cppcodec::base64_url_unpadded::encode), true))
-	.add_var("decode", cs::make_cni(gen_invoker(cppcodec::base64_url_unpadded::decode), true));
+CNI_ROOT_NAMESPACE {
+	CNI_NAMESPACE(base32) {
+		CNI_NAMESPACE(standard) {
+			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_rfc4648::encode));
+			CNI_CONST_V(decode, gen_invoker(cppcodec::base32_rfc4648::decode));
+		}
+
+		CNI_NAMESPACE(rfc4648) {
+			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_rfc4648::encode));
+			CNI_CONST_V(decode, gen_invoker(cppcodec::base32_rfc4648::decode));
+		}
+
+		CNI_NAMESPACE(crockford) {
+			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_crockford::encode));
+			CNI_CONST_V(decode, gen_invoker(cppcodec::base32_crockford::decode));
+		}
+
+		CNI_NAMESPACE(hex) {
+			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_hex::encode));
+			CNI_CONST_V(decode, gen_invoker(cppcodec::base32_hex::decode));
+		}
+	}
+
+	CNI_NAMESPACE(base64) {
+		CNI_NAMESPACE(standard) {
+			CNI_CONST_V(encode, gen_invoker(cppcodec::base64_rfc4648::encode));
+			CNI_CONST_V(decode, gen_invoker(cppcodec::base64_rfc4648::decode));
+		}
+
+		CNI_NAMESPACE(rfc4648) {
+			CNI_CONST_V(encode, gen_invoker(cppcodec::base64_rfc4648::encode));
+			CNI_CONST_V(decode, gen_invoker(cppcodec::base64_rfc4648::decode));
+		}
+
+		CNI_NAMESPACE(url) {
+			CNI_CONST_V(encode, gen_invoker(cppcodec::base64_url::encode));
+			CNI_CONST_V(decode, gen_invoker(cppcodec::base64_url::decode));
+		}
+
+		CNI_NAMESPACE(url_unpadded) {
+			CNI_CONST_V(encode, gen_invoker(cppcodec::base64_url_unpadded::encode))
+			CNI_CONST_V(decode, gen_invoker(cppcodec::base64_url_unpadded::decode))
+		}
+	}
+
+	CNI_NAMESPACE(json) {
+		CNI_NAMESPACE(reader) {
+
+		}
+
+		CNI_NAMESPACE(writer) {
+
+		}
+
+		CNI_TYPE_EXT_V(value_ext, Json::Value, value, cs::var::make<Json::Value>()) {
+
+		}
+	}
 }
+
+CNI_ENABLE_TYPE_EXT_V(json::value_ext, Json::Value, json::value);
