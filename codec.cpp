@@ -35,15 +35,10 @@
 
 CNI_ROOT_NAMESPACE {
 	CNI_NAMESPACE(base32) {
-		CNI_NAMESPACE(standard) {
-			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_rfc4648::encode));
-			CNI_CONST_V(decode, gen_invoker(cppcodec::base32_rfc4648::decode));
-		}
-
 		CNI_NAMESPACE(rfc4648) {
 			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_rfc4648::encode));
 			CNI_CONST_V(decode, gen_invoker(cppcodec::base32_rfc4648::decode));
-		}
+		} 	CNI_NAMESPACE_ALIAS(rfc4648, standard);
 
 		CNI_NAMESPACE(crockford) {
 			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_crockford::encode));
@@ -57,15 +52,10 @@ CNI_ROOT_NAMESPACE {
 	}
 
 	CNI_NAMESPACE(base64) {
-		CNI_NAMESPACE(standard) {
-			CNI_CONST_V(encode, gen_invoker(cppcodec::base64_rfc4648::encode));
-			CNI_CONST_V(decode, gen_invoker(cppcodec::base64_rfc4648::decode));
-		}
-
 		CNI_NAMESPACE(rfc4648) {
 			CNI_CONST_V(encode, gen_invoker(cppcodec::base64_rfc4648::encode));
 			CNI_CONST_V(decode, gen_invoker(cppcodec::base64_rfc4648::decode));
-		}
+		} 	CNI_NAMESPACE_ALIAS(rfc4648, standard);
 
 		CNI_NAMESPACE(url) {
 			CNI_CONST_V(encode, gen_invoker(cppcodec::base64_url::encode));

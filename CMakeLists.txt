@@ -32,9 +32,19 @@ else ()
     set(CMAKE_CXX_FLAGS "-fPIC -O3")
 endif ()
 
+SET(jsoncpp_sources
+            lib_json/json_tool.h
+            lib_json/json_reader.cpp
+            lib_json/json_valueiterator.inl
+            lib_json/json_value.cpp
+            lib_json/json_writer.cpp
+            lib_json/version.h.in)
+
+add_library(jsoncpp_lib STATIC ${jsoncpp_sources})
+
 add_library(codec SHARED codec.cpp)
 
-target_link_libraries(codec covscript)
+target_link_libraries(codec jsoncpp_lib covscript)
 
 set_target_properties(codec PROPERTIES OUTPUT_NAME codec)
 set_target_properties(codec PROPERTIES PREFIX "")
