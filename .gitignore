@@ -32,7 +32,11 @@
 *.app
 
 # Builds
+*.orig
 .vscode/
+.idea/
 build/
+cmake-build-debug/
 cmake-build/
 .DS_Store
+out.json

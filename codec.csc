@@ -19,8 +19,8 @@ var json_str =
 }"
 @end
 var json = null, obj = null
-json = codec.json.from_stream(iostream.ifstream("./test1.json"))
-json.to_stream(iostream.ofstream("./test2.json"))
+json = codec.json.from_stream(iostream.ifstream("./test.json"))
+json.to_stream(iostream.ofstream("./out.json"))
 json = codec.json.from_string(json_str)
 obj = codec.json.to_var(json)
 obj.array[1].real = math.constants.e
