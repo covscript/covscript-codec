@@ -183,8 +183,6 @@ CNI_ROOT_NAMESPACE {
 				return Json::Value(val.const_val<cs::string>());
 			else if (val.type() == typeid(cs::boolean))
 				return Json::Value(val.const_val<cs::boolean>());
-			else if (val.type() == typeid(cs::string))
-				return Json::Value(val.const_val<cs::string>());
 			else if (val.type() == typeid(cs::array)) {
 				const cs::array &arr = val.const_val<cs::array>();
 				Json::Value value(Json::ValueType::arrayValue);
