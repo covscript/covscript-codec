@@ -122,7 +122,9 @@ CNI_ROOT_NAMESPACE {
 			CNI_CONST_V(arr_empty, &Json::Value::empty);
 			CNI_CONST_V(arr_clear, &Json::Value::clear);
 			CNI_CONST_V(arr_resize, &Json::Value::resize);
-			CNI_CONST_V(arr_append, &Json::Value::append);
+			CNI_CONST_V(arr_append, [](Json::Value &value, const Json::Value &target) {
+				return value.append(target);
+			})
 			CNI_CONST_V(arr_get, [](const Json::Value &value, int idx) {
 				return value[idx];
 			});
@@ -161,8 +163,11 @@ CNI_ROOT_NAMESPACE {
 		// Read
 		CNI_CONST_V(from_string, [](const std::string &doc) {
 			cs::var val = cs::var::make<Json::Value>(Json::ValueType::nullValue);
-			Json::Reader reader;
-			reader.parse(doc, val.val<Json::Value>());
+			Json::CharReaderBuilder builder;
+			std::string errs;
+			const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
+			if (!reader->parse(doc.c_str(), doc.c_str() + doc.length(), &val.val<Json::Value>(), &errs))
+				throw cs::lang_error(errs);
 			return val;
 		});
 
@@ -218,8 +223,8 @@ CNI_ROOT_NAMESPACE {
 
 		// Write
 		CNI_CONST_V(to_string, [](const Json::Value &root) {
-			Json::FastWriter writer;
-			return writer.write(root);
+			Json::StreamWriterBuilder writer;
+			return Json::writeString(writer, root);
 		});
 
 		cs::var to_var(const Json::Value &root) {

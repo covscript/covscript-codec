@@ -37,8 +37,7 @@ SET(jsoncpp_sources
         lib_json/json_reader.cpp
         lib_json/json_valueiterator.inl
         lib_json/json_value.cpp
-        lib_json/json_writer.cpp
-        lib_json/version.h.in)
+        lib_json/json_writer.cpp)
 
 add_library(jsoncpp_lib STATIC ${jsoncpp_sources})
 
