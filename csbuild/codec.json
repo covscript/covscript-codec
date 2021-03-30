@@ -1,4 +1,5 @@
 {
+    "Type": "Extension",
     "Name": "codec",
     "Info": "Codec Extension",
     "Author": "CovScript Organization",
