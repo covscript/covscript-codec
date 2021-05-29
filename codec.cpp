@@ -35,42 +35,74 @@
 
 #define gen_invoker(NAME) [](const cs::string &str) -> cs::string { return NAME<std::string>(str); }
 
+template<typename T>
+std::string encode_stream_impl(const cs::istream &in)
+{
+	std::vector<char> buff;
+	char rbuff[256];
+	while (!in->eof()) {
+		in->read(rbuff, 256);
+		buff.insert(buff.end(), std::begin(rbuff), std::end(rbuff));
+	}
+	return T::encode(buff.data(), buff.size());
+}
+
+template<typename T>
+std::size_t decode_stream_impl(const cs::string &code, const cs::ostream &out)
+{
+	std::vector<uint8_t> buff = T::decode(code);
+	out->write(reinterpret_cast<const char*>(buff.data()), buff.size());
+	return buff.size();
+}
+
 CNI_ROOT_NAMESPACE {
 	CNI_NAMESPACE(base32)
 	{
 		CNI_NAMESPACE(rfc4648) {
-			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_rfc4648::encode));
-			CNI_CONST_V(decode, gen_invoker(cppcodec::base32_rfc4648::decode));
+			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_rfc4648::encode))
+			CNI_CONST_V(decode, gen_invoker(cppcodec::base32_rfc4648::decode))
+			CNI_CONST_V(encode_stream, &encode_stream_impl<cppcodec::base32_rfc4648>)
+			CNI_CONST_V(decode_stream, &decode_stream_impl<cppcodec::base32_rfc4648>)
 		}
 		CNI_NAMESPACE_ALIAS(rfc4648, standard);
 
 		CNI_NAMESPACE(crockford) {
-			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_crockford::encode));
-			CNI_CONST_V(decode, gen_invoker(cppcodec::base32_crockford::decode));
+			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_crockford::encode))
+			CNI_CONST_V(decode, gen_invoker(cppcodec::base32_crockford::decode))
+			CNI_CONST_V(encode_stream, &encode_stream_impl<cppcodec::base32_crockford>)
+			CNI_CONST_V(decode_stream, &decode_stream_impl<cppcodec::base32_crockford>)
 		}
 
 		CNI_NAMESPACE(hex) {
-			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_hex::encode));
-			CNI_CONST_V(decode, gen_invoker(cppcodec::base32_hex::decode));
+			CNI_CONST_V(encode, gen_invoker(cppcodec::base32_hex::encode))
+			CNI_CONST_V(decode, gen_invoker(cppcodec::base32_hex::decode))
+			CNI_CONST_V(encode_stream, &encode_stream_impl<cppcodec::base32_hex>)
+			CNI_CONST_V(decode_stream, &decode_stream_impl<cppcodec::base32_hex>)
 		}
 	}
 
 	CNI_NAMESPACE(base64)
 	{
 		CNI_NAMESPACE(rfc4648) {
-			CNI_CONST_V(encode, gen_invoker(cppcodec::base64_rfc4648::encode));
-			CNI_CONST_V(decode, gen_invoker(cppcodec::base64_rfc4648::decode));
+			CNI_CONST_V(encode, gen_invoker(cppcodec::base64_rfc4648::encode))
+			CNI_CONST_V(decode, gen_invoker(cppcodec::base64_rfc4648::decode))
+			CNI_CONST_V(encode_stream, &encode_stream_impl<cppcodec::base64_rfc4648>)
+			CNI_CONST_V(decode_stream, &decode_stream_impl<cppcodec::base64_rfc4648>)
 		}
 		CNI_NAMESPACE_ALIAS(rfc4648, standard);
 
 		CNI_NAMESPACE(url) {
 			CNI_CONST_V(encode, gen_invoker(cppcodec::base64_url::encode));
 			CNI_CONST_V(decode, gen_invoker(cppcodec::base64_url::decode));
+			CNI_CONST_V(encode_stream, &encode_stream_impl<cppcodec::base64_url>)
+			CNI_CONST_V(decode_stream, &decode_stream_impl<cppcodec::base64_url>)
 		}
 
 		CNI_NAMESPACE(url_unpadded) {
 			CNI_CONST_V(encode, gen_invoker(cppcodec::base64_url_unpadded::encode))
 			CNI_CONST_V(decode, gen_invoker(cppcodec::base64_url_unpadded::decode))
+			CNI_CONST_V(encode_stream, &encode_stream_impl<cppcodec::base64_url_unpadded>)
+			CNI_CONST_V(decode_stream, &decode_stream_impl<cppcodec::base64_url_unpadded>)
 		}
 	}
 
