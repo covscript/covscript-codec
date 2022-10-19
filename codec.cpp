@@ -29,6 +29,13 @@
 #include <cppcodec/base64_url_unpadded.hpp>
 // JSON
 #include <json/json.h>
+// Hash
+#include <crc32.h>
+#include <md5.h>
+#include <sha1.h>
+#include <sha256.h>
+// IOStream
+#include <fstream>
 // CovScript DLL Header
 #include <covscript/dll.hpp>
 #include <covscript/cni.hpp>
@@ -53,6 +60,28 @@ std::size_t decode_stream_impl(const cs::string &code, const cs::ostream &out)
 	std::vector<uint8_t> buff = T::decode(code);
 	out->write(reinterpret_cast<const char*>(buff.data()), buff.size());
 	return buff.size();
+}
+
+template<typename T>
+std::string hash_str_impl(const std::string& str)
+{
+	T hash;
+	return hash(str);
+}
+
+template<typename T>
+std::string hash_file_impl(const std::string& file)
+{
+	std::ifstream in(file, std::ios_base::in | std::ios_base::binary);
+	if (!in)
+		return std::string();
+	T hash;
+	char buffer[256];
+	while (!in.eof()) {
+		in.read(buffer, 256);
+		hash.add(buffer, in.gcount());
+	}
+	return hash.getHash();
 }
 
 CNI_ROOT_NAMESPACE {
@@ -294,6 +323,30 @@ CNI_ROOT_NAMESPACE {
 		}
 
 		CNI_CONST(to_var);
+	}
+
+	CNI_NAMESPACE(crc32)
+	{
+		CNI_CONST_V(hash_str, &hash_str_impl<CRC32>)
+		CNI_CONST_V(hash_file, &hash_file_impl<CRC32>)
+	}
+
+	CNI_NAMESPACE(md5)
+	{
+		CNI_CONST_V(hash_str, &hash_str_impl<MD5>)
+		CNI_CONST_V(hash_file, &hash_file_impl<MD5>)
+	}
+
+	CNI_NAMESPACE(sha1)
+	{
+		CNI_CONST_V(hash_str, &hash_str_impl<SHA1>)
+		CNI_CONST_V(hash_file, &hash_file_impl<SHA1>)
+	}
+
+	CNI_NAMESPACE(sha256)
+	{
+		CNI_CONST_V(hash_str, &hash_str_impl<SHA256>)
+		CNI_CONST_V(hash_file, &hash_file_impl<SHA256>)
 	}
 }
 

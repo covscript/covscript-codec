@@ -41,9 +41,17 @@ SET(jsoncpp_sources
 
 add_library(jsoncpp_lib STATIC ${jsoncpp_sources})
 
+SET(hashlib_sources
+        hash-library/crc32.cpp
+        hash-library/md5.cpp
+        hash-library/sha1.cpp
+        hash-library/sha256.cpp)
+
+add_library(hashlib STATIC ${hashlib_sources})
+
 add_library(codec SHARED codec.cpp)
 
-target_link_libraries(codec jsoncpp_lib covscript)
+target_link_libraries(codec jsoncpp_lib hashlib covscript)
 
 set_target_properties(codec PROPERTIES OUTPUT_NAME codec)
 set_target_properties(codec PROPERTIES PREFIX "")
