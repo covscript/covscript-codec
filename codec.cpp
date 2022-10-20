@@ -248,9 +248,9 @@ CNI_ROOT_NAMESPACE {
 			else if (val.type() == typeid(cs::numeric)) {
 				const cs::numeric& num = val.const_val<cs::numeric>();
 				if (num.is_integer())
-					return Json::Value(num.as_integer());
+					return Json::Value(static_cast<Json::Int>(num.as_integer()));
 				else
-					return Json::Value(num.as_float());
+					return Json::Value(static_cast<double>(num.as_float()));
 			}
 			else if (val.type() == typeid(cs::string))
 				return Json::Value(val.const_val<cs::string>());
