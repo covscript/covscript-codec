@@ -245,8 +245,13 @@ CNI_ROOT_NAMESPACE {
 		Json::Value from_var(const cs::var &val) {
 			if (val == cs::null_pointer)
 				return Json::Value(Json::ValueType::nullValue);
-			else if (val.type() == typeid(cs::number))
-				return Json::Value(static_cast<double>(val.const_val<cs::number>()));
+			else if (val.type() == typeid(cs::numeric)) {
+				const cs::numeric& num = val.const_val<cs::numeric>();
+				if (num.is_integer())
+					return Json::Value(num.as_integer());
+				else
+					return Json::Value(num.as_float());
+			}
 			else if (val.type() == typeid(cs::string))
 				return Json::Value(val.const_val<cs::string>());
 			else if (val.type() == typeid(cs::boolean))
