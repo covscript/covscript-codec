@@ -3,7 +3,7 @@
     "Name": "codec",
     "Info": "Codec Extension",
     "Author": "CovScript Organization",
-    "Version": "1.2.2",
+    "Version": "1.2.3",
     "Target": "build/imports/codec.cse",
     "Dependencies": []
 }
