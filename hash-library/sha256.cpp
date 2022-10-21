@@ -7,12 +7,7 @@
 #include "sha256.h"
 
 // big endian architectures need #define __BYTE_ORDER __BIG_ENDIAN
-#ifdef __APPLE__
-#include <machine/endian.h>
-#else
 #include <endian.h>
-#endif
-
 
 /// same as reset()
 SHA256::SHA256()

@@ -7,12 +7,7 @@
 #include "crc32.h"
 
 // big endian architectures need #define __BYTE_ORDER __BIG_ENDIAN
-#ifdef __APPLE__
-#include <machine/endian.h>
-#else
 #include <endian.h>
-#endif
-
 
 /// same as reset()
 CRC32::CRC32()
