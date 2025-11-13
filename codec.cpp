@@ -275,7 +275,11 @@ CNI_ROOT_NAMESPACE {
 			}
 			else {
 				try {
+#if COVSCRIPT_ABI_VERSION >= 251101
+					return Json::Value(val.to_string().extract());
+#else
 					return Json::Value(val.to_string());
+#endif
 				}
 				catch (cov::error &e) {
 					if (std::strcmp(e.what(), "E000D"))
