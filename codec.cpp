@@ -281,11 +281,8 @@ CNI_ROOT_NAMESPACE {
 					return Json::Value(val.to_string());
 #endif
 				}
-				catch (cov::error &e) {
-					if (std::strcmp(e.what(), "E000D"))
-						return Json::Value(cs_impl::cxx_demangle(val.type().name()));
-					else
-						throw;
+				catch (...) {
+					return Json::Value(cs_impl::cxx_demangle(val.type().name()));
 				}
 			}
 		}
